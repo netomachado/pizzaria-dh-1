@@ -2,6 +2,11 @@ const { v4 } = require("uuid");
 const PizzaModel = require("../models/Pizza");
 
 const PizzaController = {
+  buscarPizzaPeloId: (req, res) => {
+    const { id } = req.params;
+    const pizza = PizzaModel.findById(id);
+    return res.json(pizza);
+  },
   listar: (req, res) => {
     const pizzas = PizzaModel.findAll();
     // res.json(pizzas);
@@ -26,28 +31,20 @@ const PizzaController = {
     const { id } = req.params;
     const { sabor, categoria, preco } = req.body;
 
-    const pizzaEncontrada = pizzas.find((pizza) => pizza.id === id);
+    const pizzaAtualizada = PizzaModel.update(id, {
+      sabor,
+      categoria,
+      preco,
+    });
 
-    if (!pizzaEncontrada) {
-      return res.status(400).json({ mensagem: "Pizza não encontrada" });
-    }
-
-    pizzaEncontrada.sabor = sabor;
-    pizzaEncontrada.categoria = categoria;
-    pizzaEncontrada.preco = preco;
-
-    // fs.writeFileSync("./database/pizzas.json", JSON.stringify(pizzas));
-
-    return res.json(pizzaEncontrada);
+    return res.json(pizzaAtualizada);
   },
   deletarUmaPizza: (req, res) => {
     const { id } = req.params;
 
-    const newPizzas = pizzas.filter((pizza) => pizza.id !== id);
+    PizzaModel.destroy(id);
 
-    // fs.writeFileSync("./database/pizzas.json", JSON.stringify(newPizzas));
-
-    res.status(204).json();
+    res.status(204).send();
   },
 };
 
