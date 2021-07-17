@@ -28,7 +28,7 @@ const PizzaModel = {
     //opção 2
     const newPizzas = pizzas.filter((pizza) => pizza.id !== id);
 
-    fs.writeFileSync("./database/pizzas.json", JSON.stringify(newPizzas));
+    return fs.writeFileSync("./database/pizzas.json", JSON.stringify(newPizzas));
   },
 };
 
