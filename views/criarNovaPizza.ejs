@@ -12,6 +12,19 @@
     <input type="text" id="sabor" name="sabor">
     
     <label for="categoria">Categoria</label>
+    <select name="categoria" id="categoria">
+      <option selected disable">Selecione uma categoria</option>
+
+      <% categorias.forEach(categoria => { %>
+        <option value="<% categoria.id %>"><% categoria.nome %></option>
+      
+      <% }) %>
+
+      <option selected disabled>Selecione uma categoria</option>
+      <option value="1">Doce</option>
+      <option value="2">Salgada</option>
+      <option value="3">Vegetariana</option>
+    </select>
     <input type="text" id="categoria" name="categoria">
 
     <label for="preco">Preço</label>

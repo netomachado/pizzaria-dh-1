@@ -1,52 +1,32 @@
 const { v4 } = require("uuid");
-const PizzaModel = require("../models/Pizza");
+const PizzaModel = require("../models/pizzas");
 
 const PizzaController = {
-  buscarPizzaPeloId: (req, res) => {
-    const { id } = req.params;
-    console.log("oi")
-    const pizza = PizzaModel.findById(id);
-    return res.json(pizza);
+  buscarPizzaPeloId: (id) => {
+    try{
+      const pizza = PizzaModel.findById(id);
+      return pizza;
+    } catch (error) {
+      return res.status(400).json({ error});
+    }
   },
-  listar: (req, res) => {
-    const pizzas = PizzaModel.findAll();
-    console.log(pizzas)
-    res.render("pizzas", { pizzas, title: "Homepage" });
-  },
-  criarUmaPizza: (req, res) => {
-    const { sabor, categoria, preco } = req.body;
+  
+  listar: () => PizzaModel.findAll(),
 
-    const pizzaNova = {
-      id: v4(),
-      sabor,
-      categoria,
-      deleted: false,
-      preco: Number(preco),
-    };
+  criarUmaPizza: (sabor, categoria, preco ) => PizzaModel.criarUmaPizza({ sabor, categoria, preco: Number(preco) }),
+ 
 
-    PizzaModel.create(pizzaNova);
-
-    res.status(201).redirect("/pizzas");
-  },
-  editarUmaPizza: (req, res) => {
-    const { id } = req.params;
-    const { sabor, categoria, preco } = req.body;
-
-    PizzaModel.update(id, {
+  editarUmaPizza: (id, sabor, categoria, preco ) => {
+    
+    return PizzaModel.update(id, {
       sabor,
       categoria,
       preco,
-    });
-
-    return res.redirect("/pizzas");
+    })
   },
-  deletarUmaPizza: (req, res) => {
-    const { id } = req.params;
-    
-    PizzaModel.destroy(id);
 
-    return res.redirect("/pizzas");
-  },
-};
+  deletarUmaPizza: (id) => PizzaModel.destroy(id),
+
+}
 
 module.exports = PizzaController;
