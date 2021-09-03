@@ -5,7 +5,7 @@ const PizzaModel = {
 
   listar: () => Pizza.findAll(),
 
-  criarUmaPizza: ({ sabor, categoria, preco }) => Pizza.create({ sabor, categoria, preco }),
+  criarUmaPizza: ({ sabor, categoria, preco }) => Pizza.create({ sabor, categoria_id:categoria, preco }),
 
   update: (id, { sabor, categoria, preco }) => {
     return Pizza.update({

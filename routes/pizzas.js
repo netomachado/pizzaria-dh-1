@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const PizzaController = require("../controllers/PizzaController");
+const CategoriaController = require("../controllers/CategoriaController");
 const verificarIdMiddleware = require("../middlewares/verificarId");
 const { Categoria } = require('../database/models')
 
@@ -13,14 +14,15 @@ router.get('/', async function(req, res){
 
 
 router.get("/cadastrar", async (req, res) => {
-  const categorias = await Categoria.findAll();
+  const categorias = await CategoriaController.listar();
   res.render("criarNovaPizza", { title: "Criar nova pizza", categorias})
 });
 
 router.get("/editar/:id", async (req, res) => {
   const { id } = req.params;
+  const categorias = await CategoriaController.listar();
   const pizza = await PizzaController.buscarPizzaPeloId(id);
-  res.render("editarPizza", { pizza })
+  res.render("editarPizza", { pizza, categorias })
 });
 
 router.get("/:id", verificarIdMiddleware, PizzaController.buscarPizzaPeloId);
